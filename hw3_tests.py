@@ -1,6 +1,7 @@
 import data
 import build_data
 import unittest
+import hw3
 
 
 # These two values are defined to support testing below. The
@@ -180,27 +181,168 @@ class TestCases(unittest.TestCase):
 
     # Part 1
     # test population_total
+    def test_population_total_empty(self):
+        self.assertEqual(0, hw3.population_total([]))
+
+    def test_population_total_full_data(self):
+        self.assertEqual(318_857_056, hw3.population_total(full_data))
+    
 
     # Part 2
     # test filter_by_state
+    def test_filter_empty(self):
+        self.assertEqual([], hw3.filter_by_state([],"CA"))
+    def test_filter_CA(self):
+        self.assertEqual(58, len(hw3.filter_by_state(full_data,"CA")))
+    
 
     # Part 3
     # test population_by_education
+    def test_education_empty(self):
+        self.assertEqual(0, hw3.population_by_education([],"High School or Higher"))
+    def test_education_slo(self):
+        x = []
+        for count in full_data:
+            if count.county == 'San Luis Obispo County':
+                x.append(count)
+        self.assertAlmostEqual(87911.145, hw3.population_by_education(x,"Bachelor's Degree or Higher"))
+    
+
     # test population_by_ethnicity
+    def test_ethnicity_empty(self):
+            self.assertEqual(0, hw3.population_by_ethnicity([],"Two or More Races"))
+    def test_ethnicity_slo(self):
+            x = []
+            for count in full_data:
+                if count.county == 'San Luis Obispo County':
+                    x.append(count)
+            self.assertAlmostEqual(6139.826, hw3.population_by_ethnicity(x,'Black Alone'))
+
+
     # test population_below_poverty_level
+    def test_poverty_empty(self):
+            self.assertEqual(0, hw3.population_below_poverty_level([]))
+    def test_poverty_slo(self):
+            x = []
+            for count in full_data:
+                if count.county == 'San Luis Obispo County':
+                    x.append(count)
+            self.assertAlmostEqual(39908.869, hw3.population_below_poverty_level(x))
+    
 
     # Part 4
     # test percent_by_education
+    def test_education_percent_empty(self):
+            self.assertEqual(0, hw3.percent_by_education([],"High School or Higher"))
+    def test_education_percent_two(self):
+        x = []
+        for count in full_data:
+            if count.county == 'San Luis Obispo County' or count.county == 'Autauga County':
+                x.append(count)
+        self.assertAlmostEqual(29.74446749, hw3.percent_by_education(x,"Bachelor's Degree or Higher"))
+    
     # test percent_by_ethnicity
+    def test_ethnicity_percent_empty(self):
+            self.assertEqual(0, hw3.percent_by_ethnicity([],'Black Alone'))
+    def test_ethnicity_percent_two(self):
+        x = []
+        for count in full_data:
+            if count.county == 'San Luis Obispo County' or count.county == 'Autauga County':
+                x.append(count)
+        self.assertAlmostEqual(3.135013962, hw3.percent_by_ethnicity(x,'Two or More Races'))
+
     # test percent_below_poverty_level
+    def test_poverty_percent_empty(self):
+                self.assertEqual(0, hw3.percent_below_poverty_level([]))
+    def test_poverty_percent_two(self):
+            x = []
+            for count in full_data:
+                if count.county == 'San Luis Obispo County' or count.county == 'Autauga County':
+                    x.append(count)
+            self.assertAlmostEqual(13.935644197, hw3.percent_below_poverty_level(x))
+
 
     # Part 5
     # test education_greater_than
+    def test_education_greater_normal(self):
+        x = []
+        for count in full_data:
+            if count.county == 'San Luis Obispo County' or count.county == 'Autauga County' or (count.county == 'Crawford County' and count.state =="AR"):
+                x.append(count)
+        self.assertEqual(2, len(hw3.education_greater_than(x, "Bachelor's Degree or Higher", 20)))
+    def test_education_greater_equal(self):
+        x = []
+        for count in full_data:
+            if count.county == 'San Luis Obispo County' or count.county == 'Autauga County' or (count.county == 'Crawford County' and count.state =="AR"):
+                x.append(count)
+        self.assertEqual(1, len(hw3.education_greater_than(x, "Bachelor's Degree or Higher", 20.9)))
+    
     # test education_less_than
+    def test_education_less_normal(self):
+        x = []
+        for count in full_data:
+            if count.county == 'San Luis Obispo County' or count.county == 'Autauga County' or (count.county == 'Crawford County' and count.state =="AR"):
+                x.append(count)
+        self.assertEqual(1, len(hw3.education_less_than(x, "Bachelor's Degree or Higher", 20)))
+    def test_education_less_empty(self):
+        self.assertEqual(0, len(hw3.education_less_than([], "Bachelor's Degree or Higher", 1.8)))
+
     # test ethnicity_greater_than
+    def test_ethnicity_greater_normal(self):
+        x = []
+        for count in full_data:
+            if count.county == 'San Luis Obispo County' or count.county == 'Autauga County' or (count.county == 'Crawford County' and count.state =="AR"):
+                x.append(count)
+        self.assertEqual(2, len(hw3.ethnicity_greater_than(x, 'Black Alone', 2)))
+    def test_ethnicity_greater_equal(self):
+        x = []
+        for count in full_data:
+            if count.county == 'San Luis Obispo County' or count.county == 'Autauga County' or (count.county == 'Crawford County' and count.state =="AR"):
+                x.append(count)
+        self.assertEqual(2, len(hw3.ethnicity_greater_than(x, 'Two or More Races', 1.8)))
+
     # test ethnicity_less_than
+    def test_ethnicity_less_normal(self):
+        x = []
+        for count in full_data:
+            if count.county == 'San Luis Obispo County' or count.county == 'Autauga County' or (count.county == 'Crawford County' and count.state =="AR"):
+                x.append(count)
+        self.assertEqual(1, len(hw3.ethnicity_less_than(x, 'Black Alone', 2)))
+    def test_ethnicity_less_equal(self):
+        x = []
+        for count in full_data:
+            if count.county == 'San Luis Obispo County' or count.county == 'Autauga County' or (count.county == 'Crawford County' and count.state =="AR"):
+                x.append(count)
+        self.assertEqual(0, len(hw3.ethnicity_less_than(x, 'Two or More Races', 1.8)))
+
     # test below_poverty_level_greater_than
+    def test_poverty_greater_normal(self):
+        x = []
+        for count in full_data:
+            if count.county == 'San Luis Obispo County' or count.county == 'Autauga County' or (count.county == 'Crawford County' and count.state =="AR"):
+                x.append(count)
+        self.assertEqual(2, len(hw3.below_poverty_level_greater_than(x, 13)))
+    def test_poerty_greater_equal(self):
+        x = []
+        for count in full_data:
+            if count.county == 'San Luis Obispo County' or count.county == 'Autauga County' or (count.county == 'Crawford County' and count.state =="AR"):
+                x.append(count)
+        self.assertEqual(1, len(hw3.below_poverty_level_greater_than(x, 14.3)))
+
     # test below_poverty_level_less_than
+    def test_poverty_less_normal(self):
+        x = []
+        for count in full_data:
+            if count.county == 'San Luis Obispo County' or count.county == 'Autauga County' or (count.county == 'Crawford County' and count.state =="AR"):
+                x.append(count)
+        self.assertEqual(1, len(hw3.below_poverty_level_less_than(x, 13)))
+    def test_poerty_less_equal(self):
+        x = []
+        for count in full_data:
+            if count.county == 'San Luis Obispo County' or count.county == 'Autauga County' or (count.county == 'Crawford County' and count.state =="AR"):
+                x.append(count)
+        self.assertEqual(1, len(hw3.below_poverty_level_less_than(x, 14.3)))
+
 
 
 
